@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Comment rating limiter
 // @namespace    https://github.com/v-overlord/habr__comment_rating_limiter
-// @version      1.0
+// @version      1.0.1
 // @description  Hides low rated comments
 // @author       v-overlord
 // @match        https://habr.com/*
@@ -9,7 +9,7 @@
 // @grant        none
 // ==/UserScript==
 
-(function() {
+(function () {
     'use strict';
 
     const INPUT_ID = '__my_comments_rating_limiter_input';
@@ -38,8 +38,12 @@
     setTimeout(setEnterHandler, 1);
 
     function wrapHover(el, on_enter, on_leave) {
-        el.addEventListener('mouseover', function(e) { if (STATE.HIDE_ON_MOUSE) on_enter.call(this, e) });
-        el.addEventListener('mouseout', function(e) { if (STATE.HIDE_ON_MOUSE) on_leave.call(this, e) });
+        el.addEventListener('mouseover', function (e) {
+            if (STATE.HIDE_ON_MOUSE) on_enter.call(this, e)
+        });
+        el.addEventListener('mouseout', function (e) {
+            if (STATE.HIDE_ON_MOUSE) on_leave.call(this, e)
+        });
     }
 
     function processClear(value) {
@@ -56,6 +60,7 @@
             parent_comment_el.style.opacity = '1';
         });
     }
+
     function processComments(value) {
         STATE.HIDE_ON_MOUSE = true;
 
@@ -92,22 +97,22 @@
             return null;
         }
 
-        input_el.addEventListener('keypress', function(e) {
+        input_el.addEventListener('keypress', function (e) {
             if (e.key !== 'Enter') return null;
 
             processComments(this.value);
         });
 
-        clear_btn_el.addEventListener('click', function(e) {
+        clear_btn_el.addEventListener('click', function (e) {
             processClear();
 
             e.preventDefault();
             return false;
         });
 
-        setTimeout(function() {
+        setTimeout(function () {
             input_el.value = 10;
-            input_el.dispatchEvent(new KeyboardEvent('keypress',{'key':'Enter'}));
+            input_el.dispatchEvent(new KeyboardEvent('keypress', {'key': 'Enter'}));
         }, 1);
     }
 })();
